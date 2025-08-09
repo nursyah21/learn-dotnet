@@ -1,0 +1,7 @@
+[*.cs]
+
+# CS9113: Parameter is unread.
+dotnet_diagnostic.CS9113.severity = none
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none
