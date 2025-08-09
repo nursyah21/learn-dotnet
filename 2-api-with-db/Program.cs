@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresqlConnection")));
 builder.Services.AddOpenApi();
+builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IStudentService, StudentService>();
 
@@ -19,6 +20,8 @@ app.UseHttpsRedirection();
 
 // https://localhost:5001/openapi/v1.json
 app.MapOpenApi();
+app.MapHealthChecks("/api/health");
+
 app.MapControllers();
 
 
