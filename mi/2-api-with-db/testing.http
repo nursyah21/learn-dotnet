@@ -1,0 +1,29 @@
+@base_url = https://localhost:5001
+
+### check health
+GET {{base_url}}/api/health
+
+### show all student
+GET {{base_url}}/api/student
+
+### add new student
+POST {{base_url}}/api/student
+Content-Type: application/json
+
+
+{
+    "name": "jaya",
+    "email": "jayasssw@gmail.com"
+}
+
+### update student by id
+PUT {{base_url}}/api/student/1
+Content-Type: application/json
+
+{
+    "name": "jayak",
+    "email": "jayasss@gmail.com"
+}
+
+### delete student by id
+DELETE {{base_url}}/api/student/1

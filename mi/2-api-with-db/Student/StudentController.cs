@@ -1,8 +1,6 @@
-using _2_api_with_db.DTOs;
-using _2_api_with_db.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace _2_api_with_db.Controllers;
+namespace _2_api_with_db.Student;
 
 [ApiController]
 [Route("api/student")]
@@ -27,7 +25,7 @@ public class StudentsController(IStudentService studentService) : ControllerBase
 
     // POST: api/student
     [HttpPost]
-    public IActionResult AddStudent([FromBody] CreateStudentDto student)
+    public IActionResult AddStudent([FromBody] StudentDto student)
     {
         try
         {
@@ -42,7 +40,7 @@ public class StudentsController(IStudentService studentService) : ControllerBase
 
     // PUT: api/student/{id}
     [HttpPut("{id}")]
-    public IActionResult UpdateStudent(int id, [FromBody] CreateStudentDto student)
+    public IActionResult UpdateStudent(int id, [FromBody] StudentDto student)
     {
         try
         {

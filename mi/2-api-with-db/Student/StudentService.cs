@@ -1,9 +1,6 @@
 using System.Collections.Concurrent;
-using _2_api_with_db.DTOs;
-using _2_api_with_db.Models;
-using _2_api_with_db.Services.Interfaces;
 
-namespace _2_api_with_db.Services.Implementations;
+namespace _2_api_with_db.Student;
 
 public class StudentService : IStudentService
 {
@@ -19,7 +16,7 @@ public class StudentService : IStudentService
 
     private static int _studentId = 5;
 
-    public Student AddStudent(CreateStudentDto newStudent)
+    public Student AddStudent(StudentDto newStudent)
     {
         if (_students.Any(s => s.Email.Equals(newStudent.Email, StringComparison.OrdinalIgnoreCase)))
         {
@@ -54,7 +51,7 @@ public class StudentService : IStudentService
        return _students.FirstOrDefault(s => s.Id == id);
     }
 
-    public Student? UpdateStudent(int id, CreateStudentDto updatedStudent)
+    public Student? UpdateStudent(int id, StudentDto updatedStudent)
     {
         var existingStudent = _students.FirstOrDefault(s => s.Id == id);
         if (existingStudent == null)
@@ -74,4 +71,5 @@ public class StudentService : IStudentService
 
         return updatedStudentRecord;
     }
+
 }
