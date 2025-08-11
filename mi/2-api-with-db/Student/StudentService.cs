@@ -7,11 +7,11 @@ public class StudentService : IStudentService
 
     private static ConcurrentBag<Student> _students =
     [
-        new Student(1, "nursyah", "nursyah@gmail.com"),
-        new Student(2, "rahman", "rahman@gmail.com"),
-        new Student(3, "arif", "arif@gmail.com"),
-        new Student(4, "nestafa", "nestafa@gmail.com"),
-        new Student(5, "ibrahim", "ibrahim@gmail.com"),
+        new Student("nursyah", "nursyah@gmail.com"),
+        new Student("rahman", "rahman@gmail.com"),
+        new Student("arif", "arif@gmail.com"),
+        new Student("nestafa", "nestafa@gmail.com"),
+        new Student("ibrahim", "ibrahim@gmail.com"),
     ];
 
     private static int _studentId = 5;
@@ -24,7 +24,7 @@ public class StudentService : IStudentService
         }
 
         int newId = GetNextId();
-        var student = new Student(newId, newStudent.Name, newStudent.Email);
+        var student = new Student(newStudent.Name, newStudent.Email);
         _students.Add(student);
 
         return student;
@@ -66,7 +66,7 @@ public class StudentService : IStudentService
         
         _students.TryTake(out _);
 
-        var updatedStudentRecord = new Student(id, updatedStudent.Name, updatedStudent.Email);
+        var updatedStudentRecord = new Student(updatedStudent.Name, updatedStudent.Email);
         _students.Add(updatedStudentRecord);
 
         return updatedStudentRecord;
