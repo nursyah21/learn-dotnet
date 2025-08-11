@@ -1,28 +1,24 @@
-using _2_api_with_db.Data.Context;
-using _2_api_with_db.Services.Implementations;
-using _2_api_with_db.Services.Interfaces;
+using _2_api_with_db.Student;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Service Registration
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresqlConnection")));
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<StudentDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddScoped<IStudentRepository, StudenRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+
 
 var app = builder.Build();
 
-// Middleware
-app.UseHttpsRedirection();
-
-// https://localhost:5001/openapi/v1.json
-app.MapOpenApi();
-app.MapHealthChecks("/api/health");
-
+app.MapOpenApi("/openapi/v1.json");
+app.MapHealthChecks("/health");
 app.MapControllers();
 
-
-app.Run("https://localhost:5001");
+app.Run();

@@ -1,4 +1,0 @@
-namespace _2_api_with_db.Models;
-
-public record Student(int Id, string Name, string Email) { }
-
