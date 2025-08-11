@@ -24,3 +24,22 @@ dotnet publish
 - Models
 ```
 4. basic csharp and .net
+
+## 2. create api with db
+
+What I learn?
+
+1. moving from project structure by type to by feature
+```
+- <Name Feature>
+    - Controller
+    - Model
+    - Service
+    - Repository
+    - Dto
+    ...
+```
+
+
+2. how to use entity framework
+https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app
