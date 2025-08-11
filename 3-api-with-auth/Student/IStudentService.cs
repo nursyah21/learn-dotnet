@@ -1,0 +1,11 @@
+
+namespace _3_api_with_auth.Student;
+
+public interface IStudentService
+{
+    IEnumerable<Student> GetAllStudents();
+    Student? GetStudentById(int id);
+    Student AddStudent(StudentDto newStudent);
+    Student? UpdateStudent(int id, StudentDto updatedStudent);
+    bool DeleteStudent(int id);
+}
