@@ -1,75 +1,56 @@
-using System.Collections.Concurrent;
+using Microsoft.EntityFrameworkCore;
 
 namespace _2_api_with_db.Student;
 
 public class StudentService : IStudentService
 {
 
-    private static ConcurrentBag<Student> _students =
-    [
-        new Student("nursyah", "nursyah@gmail.com"),
-        new Student("rahman", "rahman@gmail.com"),
-        new Student("arif", "arif@gmail.com"),
-        new Student("nestafa", "nestafa@gmail.com"),
-        new Student("ibrahim", "ibrahim@gmail.com"),
-    ];
+    private readonly IStudentRepository _studentRepository;
 
-    private static int _studentId = 5;
+    public StudentService(IStudentRepository studentRepository)
+    {
+        _studentRepository = studentRepository;
+    }
 
     public Student AddStudent(StudentDto newStudent)
     {
-        if (_students.Any(s => s.Email.Equals(newStudent.Email, StringComparison.OrdinalIgnoreCase)))
-        {
-            throw new ArgumentException($"Email {newStudent.Email} already registered");
-        }
-
-        int newId = GetNextId();
         var student = new Student(newStudent.Name, newStudent.Email);
-        _students.Add(student);
-
-        return student;
+        try
+        {
+            return _studentRepository.Add(student);
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new ArgumentException($"Email '{newStudent.Email}' already registered.", ex);
+        }
     }
 
     public bool DeleteStudent(int id)
     {
-        var studentToRemove = _students.FirstOrDefault(s => s.Id == id);
-        return studentToRemove != null && _students.TryTake(out studentToRemove);
+        return _studentRepository.RemoveById(id);
     }
 
     public IEnumerable<Student> GetAllStudents()
     {
-        return _students.OrderBy(s=>s.Id);
-    }
-
-    public int GetNextId()
-    {
-       return Interlocked.Increment(ref _studentId);
+        return _studentRepository.GetAll();
     }
 
     public Student? GetStudentById(int id)
     {
-       return _students.FirstOrDefault(s => s.Id == id);
+       return _studentRepository.GetById(id);
     }
 
     public Student? UpdateStudent(int id, StudentDto updatedStudent)
     {
-        var existingStudent = _students.FirstOrDefault(s => s.Id == id);
-        if (existingStudent == null)
+        var newData = new Student(updatedStudent.Name, updatedStudent.Email);
+
+        try
         {
-            return null;
+            return _studentRepository.UpdateById(id, newData);
         }
-
-        if (_students.Any(s => s.Id != id && s.Email.Equals(updatedStudent.Email, StringComparison.OrdinalIgnoreCase)))
+        catch (DbUpdateException ex)
         {
-            throw new ArgumentException($"Email {updatedStudent.Email} already registered by another student");
+            throw new ArgumentException($"Email '{updatedStudent.Email}' already registed by another student.", ex);
         }
-        
-        _students.TryTake(out _);
-
-        var updatedStudentRecord = new Student(updatedStudent.Name, updatedStudent.Email);
-        _students.Add(updatedStudentRecord);
-
-        return updatedStudentRecord;
     }
-
 }

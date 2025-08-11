@@ -6,12 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
-builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddDbContext<StudentDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IStudentRepository, StudenRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
 
 var app = builder.Build();
 
